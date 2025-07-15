@@ -1,6 +1,6 @@
 # 🏛️🤖 AI Symposium 🤖🏛️
 
-A modern web application that allows two AI agents to have conversations with each other. Built for Cloudflare Pages with serverless functions for optimal performance and global distribution.
+A web application that allows two AI agents to have conversations with each other. Built for Cloudflare Pages with serverless functions. This README is AI generated because I am very lazy.
 
 ## ✨ Features
 
