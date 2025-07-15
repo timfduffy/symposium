@@ -6,7 +6,10 @@ export async function onRequestGet(context) {
     if (!apiKey) {
       return new Response(JSON.stringify({ error: "API key is required to fetch models" }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
       });
     }
 
@@ -33,9 +36,16 @@ export async function onRequestGet(context) {
       }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error('Models API GET error:', error);
+    return new Response(JSON.stringify({ 
+      error: error.message || 'Failed to fetch models',
+      details: 'Please check your API key and try again'
+    }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   }
 }
@@ -49,7 +59,10 @@ export async function onRequestPost(context) {
     if (!apiKey) {
       return new Response(JSON.stringify({ error: "API key is required" }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
       });
     }
 
@@ -76,9 +89,16 @@ export async function onRequestPost(context) {
       }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error('Models API POST error:', error);
+    return new Response(JSON.stringify({ 
+      error: error.message || 'Failed to fetch models',
+      details: 'Please check your API key and try again'
+    }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   }
 }
