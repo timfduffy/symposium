@@ -26,7 +26,7 @@ class AIAgent {
       model: this.model,
       messages: this.getMessages(),
       temperature: 0.7,
-      max_tokens: 1000
+      max_tokens: 2500
     };
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
@@ -53,7 +53,21 @@ class AIAgent {
         }
 
         const data = await response.json();
-        return data.choices[0].message.content;
+        const content = data.choices[0].message.content;
+        
+        // Check for blank/empty responses
+        if (!content || content.trim() === '') {
+          if (attempt < maxRetries - 1) {
+            console.log(`Empty response from ${this.model} on attempt ${attempt + 1}, retrying...`);
+            const waitTime = (2 ** attempt) + 1;
+            await new Promise(resolve => setTimeout(resolve, waitTime * 1000));
+            continue;
+          } else {
+            return `Error: ${this.model} returned empty responses after ${maxRetries} attempts. Please try again.`;
+          }
+        }
+        
+        return content;
 
       } catch (error) {
         if (attempt < maxRetries - 1) {
@@ -130,7 +144,7 @@ export async function onRequestPost(context) {
     if (nextAgent === "Agent 1") {
       // Agent 1 responds
       response = await agent1.generateResponse(apiKey);
-      if (typeof response === 'string' && !response.startsWith('Error')) {
+      if (typeof response === 'string' && !response.startsWith('Error') && response.trim() !== '') {
         agent1.addMessage("assistant", response);
         agent2.addMessage("user", response);
 
@@ -140,12 +154,12 @@ export async function onRequestPost(context) {
           message: response
         });
       } else {
-        throw new Error(response);
+        throw new Error(response || 'Agent 1 returned an empty response');
       }
     } else {
       // Agent 2 responds
       response = await agent2.generateResponse(apiKey);
-      if (typeof response === 'string' && !response.startsWith('Error')) {
+      if (typeof response === 'string' && !response.startsWith('Error') && response.trim() !== '') {
         agent2.addMessage("assistant", response);
         agent1.addMessage("user", response);
 
@@ -157,7 +171,7 @@ export async function onRequestPost(context) {
         
         nextAgent = "Agent 1";
       } else {
-        throw new Error(response);
+        throw new Error(response || 'Agent 2 returned an empty response');
       }
     }
 
