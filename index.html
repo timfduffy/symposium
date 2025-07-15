@@ -386,10 +386,10 @@
         </div>
     </div>
 
-    <footer style="text-align: center; padding: 20px; margin-top: 40px;">
+    <footer style="text-align: center; padding: 20px; margin-top: 20px;">
         <div style="display: inline-block; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); padding: 25px 35px; margin: 0 auto;">
             <p style="margin: 0 0 15px 0; color: #6c757d; font-size: 0.9rem;">
-                🏛️🤖 <strong>AI Symposium</strong> - Made with ❤️ by CLaude Sonnet 4 for AI conversation exploration
+                🏛️🤖 <strong>AI Symposium</strong> - Made with ❤️ by Claude Sonnet 4 for AI conversation exploration
             </p>
             <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                 <a href="https://github.com/timfduffy/symposium" target="_blank" style="color: #667eea; text-decoration: none; font-size: 0.9rem;">
@@ -557,6 +557,9 @@
             document.getElementById('cancel-btn').style.display = 'inline-block';
             isGenerating = true;
 
+            // Update display immediately to show generation is starting
+            updateLoadingMessage();
+
             try {
                 // Generate messages one at a time
                 for (let i = 0; i < numTurns * 2; i++) {
@@ -626,8 +629,12 @@
             const container = document.getElementById('conversation-container');
             const currentContent = container.innerHTML;
             
+            // If showing initial message, replace it immediately
+            if (currentContent.includes('Configure your agents and click a button to start the conversation!')) {
+                container.innerHTML = `<div class="loading">🤔 Generating ${nextAgent} response...</div>`;
+            }
             // Only add loading if we don't already have one
-            if (!currentContent.includes('🤔 Generating')) {
+            else if (!currentContent.includes('🤔 Generating')) {
                 container.innerHTML = currentContent + `<div class="loading">🤔 Generating ${nextAgent} response...</div>`;
             }
         }
