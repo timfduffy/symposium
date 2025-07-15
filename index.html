@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>️🏛️🤖 Symposium 🤖🏛️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;  /* Reduced from 30px */
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;  /* Keep same font size */
+            margin-bottom: 0;    /* Remove bottom margin */
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .config-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .agent-config {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .agent-config h3 {
+            color: #495057;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .controls-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .turn-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .conversation-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .conversation-section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .conversation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .conversation-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .message.agent1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: 20px;
+        }
+
+        .message.agent2 {
+            background: linear-gradient(135deg, #6a4c93 0%, #3e2723 100%);
+            color: white;
+            margin-right: 20px;
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            margin-left: 40px;
+            margin-right: 40px;
+        }
+
+        .message-header {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .message-content {
+            line-height: 1.6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        @media (max-width: 768px) {
+            .config-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .turn-buttons {
+                flex-direction: column;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1> 🏛️🤖 Symposium 🤖🏛️</h1>
+        </div>
+
+        <div class="content">
+            <div class="config-section">
+                <div class="agent-config">
+                    <h3>Agent 1</h3>
+                    <div class="form-group">
+                        <div style="display: flex; gap: 15px; align-items: end;">
+                            <div style="flex: 1;">
+                                <label for="agent1-provider">Provider:</label>
+                                <select id="agent1-provider" onchange="updateModelOptions('agent1')">
+                                    <option value="">Select Provider...</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="agent1-model">Model:</label>
+                                <select id="agent1-model">
+                                    <option value="">Select Model...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent1-prompt">System Prompt:</label>
+                        <textarea id="agent1-prompt" placeholder="Enter the system prompt for Agent 1...">You are about to be connected to a conversation with another AI agent.</textarea>
+                    </div>
+                </div>
+
+                <div class="agent-config">
+                    <h3>Agent 2</h3>
+                    <div class="form-group">
+                        <div style="display: flex; gap: 15px; align-items: end;">
+                            <div style="flex: 1;">
+                                <label for="agent2-provider">Provider:</label>
+                                <select id="agent2-provider" onchange="updateModelOptions('agent2')">
+                                    <option value="">Select Provider...</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="agent2-model">Model:</label>
+                                <select id="agent2-model">
+                                    <option value="">Select Model...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent2-prompt">System Prompt:</label>
+                        <textarea id="agent2-prompt" placeholder="Enter the system prompt for Agent 2...">You are about to be connected to a conversation with another AI agent.</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="form-group">
+                    <label for="api-key">OpenRouter API Key:</label>
+                    <input type="password" id="api-key" placeholder="Enter your OpenRouter API key..." style="font-family: monospace;" onchange="loadModels()" autocomplete="off" spellcheck="false">
+                    <small style="color: #6c757d; font-size: 0.9rem; margin-top: 5px; display: block;">🔒 Your API key is not stored and only exists during this session</small>
+                </div>
+                <div class="form-group">
+                    <label for="initial-message">Initial Message:</label>
+                    <input type="text" id="initial-message" value="Hi AIs! This is the user, I'm going to let you drive this conversation, talk about whatever you want!" placeholder="Enter the initial message to start the conversation...">
+                </div>
+                <div class="form-group">
+                    <label for="interject-message">Interject:</label>
+                    <div style="display: flex; gap: 15px; align-items: end;">
+                        <input type="text" id="interject-message" placeholder="Enter a message to add after the last AI response..." style="flex: 1;">
+                        <button class="btn btn-primary" onclick="addInterjection()" style="white-space: nowrap;">Add Interjection</button>
+                    </div>
+                </div>
+                <div class="turn-buttons">
+                    <button class="btn btn-primary" onclick="continueConversation(1)">+1 Turn</button>
+                    <button class="btn btn-primary" onclick="continueConversation(5)">+5 Turns</button>
+                    <button class="btn btn-primary" onclick="continueConversation(25)">+25 Turns</button>
+                    <button class="btn btn-secondary" onclick="clearConversation()">Clear Conversation</button>
+                    <button class="btn btn-secondary" onclick="cancelGeneration()" id="cancel-btn" style="display: none;">⏹️ Cancel Generation</button>
+                </div>
+            </div>
+
+            <div class="conversation-section">
+                <div class="conversation-header">
+                    <h3>💬 Conversation</h3>
+                    <div id="save-controls" style="display: none;">
+                        <span style="margin-right: 10px; font-weight: 600; color: #495057;">Save Conversation:</span>
+                        <button class="btn btn-primary" onclick="saveConversationJSON()" style="margin-right: 10px;">📄 As JSON</button>
+                        <button class="btn btn-primary" onclick="saveConversationImage()">🖼️ As Image</button>
+                    </div>
+                </div>
+                <div id="conversation-container" class="conversation-container">
+                    <div class="loading">Configure your agents and click a button to start the conversation!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let conversationHistory = [];
+        let agent1History = [];
+        let agent2History = [];
+        let currentAgent1Model = '';
+        let currentAgent2Model = '';
+        let isGenerating = false;
+
+        let allModels = []; // Store all models from API
+        let providers = []; // Store unique providers
+
+        // Load available models on page load
+        async function loadModels() {
+            try {
+                // Try to get API key if available
+                const apiKey = document.getElementById('api-key')?.value;
+                
+                let response;
+                if (apiKey) {
+                    // Use POST with API key if available
+                    response = await fetch('/api/models', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ api_key: apiKey })
+                    });
+                } else {
+                    // Fall back to GET (uses environment variable if available)
+                    response = await fetch('/api/models');
+                }
+                
+                const data = await response.json();
+                
+                if (response.ok && data.models) {
+                    allModels = data.models;
+                    
+                    // Extract unique providers
+                    const providerSet = new Set();
+                    allModels.forEach(model => {
+                        const provider = model.id.split('/')[0];
+                        providerSet.add(provider);
+                    });
+                    providers = Array.from(providerSet).sort();
+                    
+                    // Populate provider dropdowns
+                    const providerSelects = [
+                        document.getElementById('agent1-provider'),
+                        document.getElementById('agent2-provider')
+                    ];
+                    
+                    providerSelects.forEach(select => {
+                        select.innerHTML = '<option value="">Select Provider...</option>';
+                        providers.forEach(provider => {
+                            const option = document.createElement('option');
+                            option.value = provider;
+                            option.textContent = provider.charAt(0).toUpperCase() + provider.slice(1);
+                            select.appendChild(option);
+                        });
+                    });
+                    
+                    // Set default providers
+                    document.getElementById('agent1-provider').value = 'anthropic';
+                    document.getElementById('agent2-provider').value = 'moonshotai';
+                    
+                    // Update model options for both agents
+                    updateModelOptions('agent1');
+                    updateModelOptions('agent2');
+                }
+            } catch (error) {
+                console.log('Could not load models, using defaults');
+            }
+        }
+
+        function updateModelOptions(agent) {
+            const providerSelect = document.getElementById(`${agent}-provider`);
+            const modelSelect = document.getElementById(`${agent}-model`);
+            const selectedProvider = providerSelect.value;
+            
+            // Clear current model options
+            modelSelect.innerHTML = '<option value="">Select Model...</option>';
+            
+            if (!selectedProvider) return;
+            
+            // Filter models by selected provider
+            const providerModels = allModels.filter(model => 
+                model.id.startsWith(selectedProvider + '/')
+            );
+            
+            // Add model options
+            providerModels.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model.id;
+                option.textContent = model.name || model.id.split('/')[1];
+                modelSelect.appendChild(option);
+            });
+            
+            // Set specific default models based on agent
+            if (providerModels.length > 0) {
+                if (agent === 'agent1' && selectedProvider === 'anthropic') {
+                    // Set to Claude Sonnet 4
+                    const claudeSonnet4 = providerModels.find(model => 
+                        model.id === 'anthropic/claude-sonnet-4'
+                    );
+                    modelSelect.value = claudeSonnet4 ? claudeSonnet4.id : providerModels[0].id;
+                } else if (agent === 'agent2' && selectedProvider === 'moonshotai') {
+                    // Set to Kimi K2
+                    const kimiK2 = providerModels.find(model => 
+                        model.id === 'moonshotai/kimi-k2'
+                    );
+                    modelSelect.value = kimiK2 ? kimiK2.id : providerModels[0].id;
+                } else {
+                    // Default to first available model
+                    modelSelect.value = providerModels[0].id;
+                }
+            }
+        }
+
+        async function continueConversation(numTurns) {
+            const apiKey = document.getElementById('api-key').value;
+            const agent1Model = document.getElementById('agent1-model').value;
+            const agent2Model = document.getElementById('agent2-model').value;
+            const agent1Prompt = document.getElementById('agent1-prompt').value;
+            const agent2Prompt = document.getElementById('agent2-prompt').value;
+            const initialMessage = document.getElementById('initial-message').value;
+
+            // Validate inputs
+            if (!apiKey) {
+                alert('Please enter your OpenRouter API key!');
+                return;
+            }
+            if (!agent1Model || !agent2Model) {
+                alert('Please select models for both agents!');
+                return;
+            }
+
+            // Update current model names
+            currentAgent1Model = agent1Model;
+            currentAgent2Model = agent2Model;
+
+            // Show cancel button
+            document.getElementById('cancel-btn').style.display = 'inline-block';
+            isGenerating = true;
+
+            try {
+                // Generate messages one at a time
+                for (let i = 0; i < numTurns * 2; i++) {
+                    if (!isGenerating) break; // Check if cancelled
+                    
+                    // Show loading for current message
+                    updateLoadingMessage();
+                    
+                    const response = await fetch('/api/chat-single', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            api_key: apiKey,
+                            agent1_model: agent1Model,
+                            agent2_model: agent2Model,
+                            agent1_system_prompt: agent1Prompt,
+                            agent2_system_prompt: agent2Prompt,
+                            initial_message: initialMessage,
+                            existing_conversation: conversationHistory,
+                            agent1_history: agent1History,
+                            agent2_history: agent2History
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        conversationHistory = data.conversation;
+                        agent1History = data.agent1_history;
+                        agent2History = data.agent2_history;
+                        displayConversation();
+                        
+                        // If cancelled, stop generating
+                        if (data.cancelled || !isGenerating) {
+                            break;
+                        }
+                    } else {
+                        throw new Error(data.error || 'Failed to generate conversation');
+                    }
+                }
+            } catch (error) {
+                document.getElementById('conversation-container').innerHTML = 
+                    `<div class="error">❌ Error: ${error.message}</div>`;
+            } finally {
+                // Hide cancel button and reset generation state
+                document.getElementById('cancel-btn').style.display = 'none';
+                isGenerating = false;
+            }
+        }
+
+        function updateLoadingMessage() {
+            // Determine which agent is speaking next
+            let nextAgent = "Agent 1";
+            if (conversationHistory.length > 0) {
+                const lastAgent = conversationHistory[conversationHistory.length - 1].agent;
+                nextAgent = lastAgent === "Agent 1" ? "Agent 2" : "Agent 1";
+            }
+            
+            const container = document.getElementById('conversation-container');
+            const currentContent = container.innerHTML;
+            
+            // Only add loading if we don't already have one
+            if (!currentContent.includes('🤔 Generating')) {
+                container.innerHTML = currentContent + `<div class="loading">🤔 Generating ${nextAgent} response...</div>`;
+            }
+        }
+
+        async function cancelGeneration() {
+            if (!isGenerating) return;
+            
+            try {
+                await fetch('/api/cancel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                document.getElementById('cancel-btn').style.display = 'none';
+                isGenerating = false;
+                
+                // Update loading message to show cancellation
+                const container = document.getElementById('conversation-container');
+                if (container.innerHTML.includes('Generating conversation')) {
+                    container.innerHTML = '<div class="loading">⏹️ Cancelling generation...</div>';
+                }
+            } catch (error) {
+                console.error('Error cancelling generation:', error);
+            }
+        }
+
+        function displayConversation() {
+            const container = document.getElementById('conversation-container');
+            
+            if (conversationHistory.length === 0) {
+                container.innerHTML = '<div class="loading">No conversation yet. Start one above!</div>';
+                document.getElementById('save-controls').style.display = 'none';
+                return;
+            }
+
+            let html = '';
+            conversationHistory.forEach((message, index) => {
+                let messageClass, headerText;
+                
+                if (message.agent === 'User') {
+                    messageClass = 'user';
+                    headerText = `${message.agent} - Turn ${message.turn}`;
+                } else {
+                    messageClass = message.agent === 'Agent 1' ? 'agent1' : 'agent2';
+                    const modelName = message.agent === 'Agent 1' ? currentAgent1Model : currentAgent2Model;
+                    const shortModelName = modelName.split('/').pop(); // Get just the model name part
+                    headerText = `${message.agent} (${shortModelName}) - Turn ${message.turn}`;
+                }
+                
+                html += `
+                    <div class="message ${messageClass}">
+                        <div class="message-header">
+                            <span>${headerText}</span>
+                            <button class="delete-btn" onclick="deleteMessage(${index})" title="Delete this message and all following messages">🗑️</button>
+                        </div>
+                        <div class="message-content">${message.message}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+            document.getElementById('save-controls').style.display = 'block';
+        }
+
+        function deleteMessage(messageIndex) {
+            const message = conversationHistory[messageIndex];
+            const remainingMessages = conversationHistory.length - messageIndex;
+            
+            // Confirm deletion
+            const confirmMessage = `Are you sure you want to delete the message from ${message.agent} and all ${remainingMessages - 1} following messages?`;
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            // Remove messages from conversation history
+            conversationHistory = conversationHistory.slice(0, messageIndex);
+            
+            // Rebuild agent histories based on remaining conversation
+            rebuildAgentHistories();
+            
+            // Update display
+            displayConversation();
+        }
+
+        function rebuildAgentHistories() {
+            // Reset agent histories
+            agent1History = [];
+            agent2History = [];
+            
+            // Add initial message if no conversation exists
+            if (conversationHistory.length === 0) {
+                const initialMessage = document.getElementById('initial-message').value;
+                agent1History.push({"role": "user", "content": initialMessage});
+                agent2History.push({"role": "user", "content": initialMessage});
+                return;
+            }
+            
+            // Start with initial message
+            const initialMessage = document.getElementById('initial-message').value;
+            agent1History.push({"role": "user", "content": initialMessage});
+            agent2History.push({"role": "user", "content": initialMessage});
+            
+            // Rebuild histories from conversation
+            conversationHistory.forEach((message, index) => {
+                if (message.agent === "Agent 1") {
+                    agent1History.push({"role": "assistant", "content": message.message});
+                    agent2History.push({"role": "user", "content": message.message});
+                } else if (message.agent === "Agent 2") {
+                    agent2History.push({"role": "assistant", "content": message.message});
+                    agent1History.push({"role": "user", "content": message.message});
+                } else if (message.agent === "User") {
+                    // User interjections are added as user messages to both agents
+                    agent1History.push({"role": "user", "content": message.message});
+                    agent2History.push({"role": "user", "content": message.message});
+                }
+            });
+        }
+
+        function clearConversation() {
+            conversationHistory = [];
+            agent1History = [];
+            agent2History = [];
+            currentAgent1Model = '';
+            currentAgent2Model = '';
+            displayConversation();
+        }
+
+        // Clear API key from memory when page unloads
+        window.addEventListener('beforeunload', function() {
+            const apiKeyInput = document.getElementById('api-key');
+            if (apiKeyInput) {
+                apiKeyInput.value = '';
+            }
+        });
+
+        function saveConversationJSON() {
+            if (conversationHistory.length === 0) {
+                alert('No conversation to save!');
+                return;
+            }
+
+            const agent1Prompt = document.getElementById('agent1-prompt').value;
+            const agent2Prompt = document.getElementById('agent2-prompt').value;
+            const initialMessage = document.getElementById('initial-message').value;
+
+            const conversationData = {
+                timestamp: new Date().toISOString(),
+                agent1: {
+                    model: currentAgent1Model,
+                    system_prompt: agent1Prompt
+                },
+                agent2: {
+                    model: currentAgent2Model,
+                    system_prompt: agent2Prompt
+                },
+                initial_message: initialMessage,
+                conversation: conversationHistory
+            };
+
+            const dataStr = JSON.stringify(conversationData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+            const filename = `ai-conversation-${timestamp}.json`;
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = filename;
+            link.click();
+            
+            URL.revokeObjectURL(link.href);
+        }
+
+        function saveConversationImage() {
+            if (conversationHistory.length === 0) {
+                alert('No conversation to save!');
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 1200;
+            let currentY = 40;
+            
+            // Styling constants
+            const padding = 40;
+            const sectionSpacing = 30;
+            const messageSpacing = 20;
+            const borderRadius = 15;
+            
+            // Colors
+            const bgColor = '#f8f9fa';
+            const headerColor = '#495057';
+            const agent1Color = '#667eea';
+            const agent2Color = '#6a4c93';
+            const userColor = '#28a745';
+            const textColor = '#ffffff';
+            
+            // Fonts
+            ctx.font = '16px "Segoe UI", Arial, sans-serif';
+            
+            // Helper functions
+            function drawRoundedRect(x, y, width, height, radius, fillColor) {
+                ctx.fillStyle = fillColor;
+                ctx.beginPath();
+                ctx.roundRect(x, y, width, height, radius);
+                ctx.fill();
+            }
+            
+            function wrapText(text, maxWidth) {
+                const words = text.split(' ');
+                const lines = [];
+                let currentLine = '';
+                
+                for (let word of words) {
+                    const testLine = currentLine + (currentLine ? ' ' : '') + word;
+                    const metrics = ctx.measureText(testLine);
+                    
+                    if (metrics.width > maxWidth && currentLine) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = testLine;
+                    }
+                }
+                if (currentLine) lines.push(currentLine);
+                return lines;
+            }
+            
+            // Set initial canvas height (we'll resize it later based on actual content)
+            canvas.height = 10000; // Temporary large height
+            
+            // Fill background
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw title
+            ctx.fillStyle = headerColor;
+            ctx.font = 'bold 28px "Segoe UI", Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🏛️🤖 Symposium 🤖🏛️', canvas.width / 2, 40);
+            ctx.textAlign = 'left'; // Reset to left alignment for all subsequent text
+            currentY = 80;
+            
+            // Agent 1 config
+            const agent1Model = document.getElementById('agent1-model').value;
+            const agent2Model = document.getElementById('agent2-model').value;
+            
+            // Pre-calculate for rendering
+            const initialMessage = document.getElementById('initial-message').value;
+            ctx.font = '14px "Segoe UI", Arial, sans-serif'; // Set font for initial message measurement
+            const initialLines = wrapText(initialMessage, canvas.width - 120);
+            const agent1Prompt = document.getElementById('agent1-prompt').value;
+            const agent2Prompt = document.getElementById('agent2-prompt').value;
+            const configWidth = (canvas.width - padding * 3) / 2;
+            // Font is already set to 14px for agent prompts
+            const agent1PromptLines = wrapText(agent1Prompt, configWidth - 30);
+            const agent2PromptLines = wrapText(agent2Prompt, configWidth - 30);
+            const maxPromptLines = Math.max(agent1PromptLines.slice(0, 3).length, agent2PromptLines.slice(0, 3).length);
+            const configBoxHeight = 50 + (maxPromptLines * 18) + 15;
+            const initialBoxHeight = (initialLines.length * 25) + 15;
+            
+            // Calculate agent prompt lines and box heights
+            const displayedAgent1Lines = agent1PromptLines.slice(0, 3);
+            const displayedAgent2Lines = agent2PromptLines.slice(0, 3);
+            
+            // Agent 1 box
+            drawRoundedRect(padding, currentY, configWidth, configBoxHeight, 10, '#ffffff');
+            ctx.fillStyle = agent1Color;
+            ctx.font = 'bold 16px "Segoe UI", Arial, sans-serif';
+            ctx.fillText('Agent 1', padding + 15, currentY + 25);
+            ctx.fillStyle = headerColor;
+            ctx.font = '14px "Segoe UI", Arial, sans-serif';
+            ctx.fillText(`Model: ${agent1Model.split('/').pop()}`, padding + 15, currentY + 45);
+            displayedAgent1Lines.forEach((line, i) => {
+                ctx.fillText(line + (i === 2 && agent1PromptLines.length > 3 ? '...' : ''), padding + 15, currentY + 65 + (i * 18));
+            });
+            
+            // Agent 2 box
+            drawRoundedRect(padding * 2 + configWidth, currentY, configWidth, configBoxHeight, 10, '#ffffff');
+            ctx.fillStyle = agent2Color;
+            ctx.font = 'bold 16px "Segoe UI", Arial, sans-serif';
+            ctx.fillText('Agent 2', padding * 2 + configWidth + 15, currentY + 25);
+            ctx.fillStyle = headerColor;
+            ctx.font = '14px "Segoe UI", Arial, sans-serif';
+            ctx.fillText(`Model: ${agent2Model.split('/').pop()}`, padding * 2 + configWidth + 15, currentY + 45);
+            displayedAgent2Lines.forEach((line, i) => {
+                ctx.fillText(line + (i === 2 && agent2PromptLines.length > 3 ? '...' : ''), padding * 2 + configWidth + 15, currentY + 65 + (i * 18));
+            });
+            
+            currentY += configBoxHeight + 30;
+            
+            // Initial message
+            ctx.fillStyle = headerColor;
+            ctx.font = 'bold 16px "Segoe UI", Arial, sans-serif';
+            ctx.fillText('Initial Message:', padding, currentY);
+            currentY += 15;
+            
+            drawRoundedRect(padding, currentY, canvas.width - padding * 2, initialBoxHeight, 10, '#ffffff');
+            ctx.fillStyle = headerColor;
+            ctx.font = '14px "Segoe UI", Arial, sans-serif';
+            initialLines.forEach((line, i) => {
+                ctx.fillText(line, padding + 15, currentY + 25 + (i * 25));
+            });
+            currentY += initialBoxHeight + 30;
+            
+            // Conversation messages
+            ctx.fillStyle = headerColor;
+            ctx.font = 'bold 18px "Segoe UI", Arial, sans-serif';
+            ctx.fillText('Conversation', padding, currentY);
+            currentY += 20;
+            
+            conversationHistory.forEach((message, index) => {
+                let bgColor, textColor, xOffset, messageWidth;
+                
+                if (message.agent === 'Agent 1') {
+                    bgColor = agent1Color;
+                    textColor = '#ffffff';
+                    xOffset = 60;
+                    messageWidth = canvas.width - 160;
+                } else if (message.agent === 'Agent 2') {
+                    bgColor = agent2Color;
+                    textColor = '#ffffff';
+                    messageWidth = canvas.width - 160;
+                    xOffset = 100; // Right-aligned positioning
+                } else {
+                    bgColor = userColor;
+                    textColor = '#ffffff';
+                    xOffset = 120;
+                    messageWidth = canvas.width - 240;
+                }
+                
+                // Set font for accurate text measurement
+                ctx.font = '14px "Segoe UI", Arial, sans-serif';
+                const messageLines = wrapText(message.message, messageWidth - 30); // Account for padding
+                const messageHeight = 40 + (messageLines.length * 20);
+                
+                drawRoundedRect(xOffset, currentY, messageWidth, messageHeight, 10, bgColor);
+                
+                // Message header
+                ctx.fillStyle = textColor;
+                ctx.font = 'bold 14px "Segoe UI", Arial, sans-serif';
+                let headerText;
+                if (message.agent === 'User') {
+                    headerText = `${message.agent} - Turn ${message.turn}`;
+                } else {
+                    const modelName = message.agent === 'Agent 1' ? agent1Model : agent2Model;
+                    headerText = `${message.agent} (${modelName.split('/').pop()}) - Turn ${message.turn}`;
+                }
+                ctx.fillText(headerText, xOffset + 15, currentY + 20);
+                
+                // Message content
+                ctx.font = '14px "Segoe UI", Arial, sans-serif';
+                messageLines.forEach((line, i) => {
+                    ctx.fillText(line, xOffset + 15, currentY + 45 + (i * 20));
+                });
+                
+                currentY += messageHeight;
+                
+                // Only add spacing between messages, not after the last one
+                if (index < conversationHistory.length - 1) {
+                    currentY += messageSpacing;
+                }
+            });
+            
+            // Add final bottom padding and resize canvas to actual content
+            const finalHeight = currentY + 20; // 40px bottom padding
+            
+            // Create a new canvas with the correct height
+            const finalCanvas = document.createElement('canvas');
+            finalCanvas.width = canvas.width;
+            finalCanvas.height = finalHeight;
+            const finalCtx = finalCanvas.getContext('2d');
+            
+            // Copy the rendered content to the final canvas
+            finalCtx.drawImage(canvas, 0, 0);
+            
+            // Save the final image
+            finalCanvas.toBlob(function(blob) {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                link.download = `ai-conversation-${timestamp}.png`;
+                link.click();
+                URL.revokeObjectURL(link.href);
+            });
+        }
+
+        function addInterjection() {
+            const interjection = document.getElementById('interject-message').value.trim();
+            if (!interjection) {
+                alert('Please enter a message to add as an interjection.');
+                return;
+            }
+
+            if (conversationHistory.length === 0) {
+                alert('Start a conversation first before adding an interjection.');
+                return;
+            }
+
+            // Add the interjection as a user message to the conversation history
+            const lastMessage = conversationHistory[conversationHistory.length - 1];
+            const nextTurn = lastMessage.turn + 1;
+            
+            conversationHistory.push({
+                agent: "User",
+                message: interjection,
+                turn: nextTurn
+            });
+
+            // Rebuild agent histories to include the user interjection
+            rebuildAgentHistories();
+
+            // Update display
+            displayConversation();
+
+            // Clear the interjection input field
+            document.getElementById('interject-message').value = '';
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadModels();
+        });
+    </script>
+</body>
+</html> 

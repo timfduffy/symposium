@@ -1,0 +1,26 @@
+{
+  "name": "ai-symposium",
+  "version": "1.0.0",
+  "description": "AI Agent Conversation Symposium - Cloudflare Pages version",
+  "main": "index.html",
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy",
+    "build": "echo 'No build step required'"
+  },
+  "keywords": [
+    "ai",
+    "chatbot",
+    "conversation",
+    "openrouter",
+    "cloudflare-pages"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
